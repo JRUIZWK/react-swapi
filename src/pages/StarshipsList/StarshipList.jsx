@@ -1,33 +1,38 @@
-import { useEffect, useState } from "react";
-import { getStarshipList } from "../../services/sw-api";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
+import { getShipList } from '../../services/sw-api';
 
-const StarshipList = () => {
-  const [starshipList, setStarshipList] = useState([])
+const StarshipList = (props) => {
+  const [ships, setShips] = useState([])
 
-  useEffect(() => {
-    getStarshipList()
-    .then(starshipList => setStarshipList(starshipList.results))
+  useEffect(()=> {
+    getShipList()
+    .then(shipData => setShips(shipData.results))
   }, [])
 
-  return (  
+  return (
     <>
-    <div className="starship-container">
-      {starshipList.map((starship)=> (
-        <div key={starship.name}>
-          <Link 
-          className="App-link"
-          to='/starship'
-          state={{starship}}> 
-          <div className="starship-div">
-            {starship.name} 
-          </div>
-        </Link> 
-        </div>
-      ))}
+    <div>
+      <div className="icon-container">
+      {ships.length ?
+      <>
+        {ships.map((ship) => (
+          <Link to='/ship-details' state={{ship}} style={{textDecoration: 'none'}}>
+            <div key={ship.name} id='classDiv'>
+              {ship.name}
+            </div>
+          </Link>
+        ))}
+      </>
+      :
+      <>
+        <p>Loading starship list...</p>
+      </>
+      }
+      </div>
     </div>
-    </>
-  );
+  </>
+)
 }
 
 export default StarshipList;

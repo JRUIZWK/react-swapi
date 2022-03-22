@@ -1,30 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { getDetails } from "../../services/sw-api";
+import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom';
+import { getDetails } from '../../services/sw-api';
+import { Link } from 'react-router-dom';
 
-const StarshipDetails = (props) => {
-  const [starshipDetails, setStarshipDetails] = useState({})
-
+const StarshipDetails = () => {
+  const [shipDetails, setShipDetails] = useState({})
   let location = useLocation()
 
-  useEffect(() => {
-    getDetails(location.state.starship.url)
-    .then(starshipDetails => setStarshipDetails(starshipDetails))
-  })
-  return (  
-    <>
-    <div className="starship-detail-container">
-      <div className="starship-detail-div">
-        <p>NAME: {starshipDetails.name}</p>
-        <p>MODEL: {starshipDetails.model}</p>
-        <a className="App-link" href="/">RETURN</a>
-      </div>
-    </div>
-      
+  useEffect(()=> {
+    getDetails(location.state.ship.url)
+    .then(shipDetails => setShipDetails(shipDetails))
+  }, [])
 
+  return (
+    <>
+      <h3>{shipDetails.name}</h3>
+      <div className='detail-card'>
+        <p>Model: {shipDetails.model}</p>
+        <p>Length: {shipDetails.length} m</p>
+        <p>Crew: {shipDetails.crew}</p>
+        <Link to='/'>Return</Link>
+        <br />
+      </div>
     </>
-    
   );
 }
- 
+
 export default StarshipDetails;
